@@ -1,113 +1,68 @@
-# Git
+# 创建SSH Key
 
-分布式版本管理系统，关键是免费。^_^
+前面已经学习了Git在本地的基础操作，之前也说过，Git是分布式版本管理系统，如果只是在本地操作，怎么能叫分布式呢。
 
-# windows install Git
+实际情况是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从服务器仓库中拉取别人的提交
 
-直接从git官网下载安装程序即可，在开始-全部程序-git中有Git Bash 表示安装成功。
+有个叫[GitHub](https://github.com/)的神奇的网站，从名字就可以看出，这个网站就是提供Git仓库托管服务的，所以，只要注册一个GitHub账号，就可以免费获得Git远程仓库。
 
-# version manager
-
-创建仓库，添加文件，提交版本
+本地仓库和远程Git仓库是通过SSH传输的，因此要在github帐号配置本地公钥。
 
 <!-- more -->
 
-## mark repository
+## 创建SSH Key
 
-第一步需要创建一个空目录（也可以是在其他目录下，建议创建新的目录，个人习惯哈）
+1.   创建SSH Key。在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有`id_rsa`和`id_rsa.pub`这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
 
-```shll
-#mkdir learngit   ---创建目录
-#git init      ---初始化成git仓库  pwd 命令可以查看当前目录
-```
+     ```shell
+     $ ssh-keygen -t rsa -C "youremail@example.com"
+     ```
 
-## add file
+2.   登陆GitHub，打开“Account settings”，“SSH Keys”页面：
 
-在该目录下创建一个文件readme.md
+     然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴`id_rsa.pub`文件的内容
 
-Git is a version control system.
+为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。
 
-Git is free software.
+当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。
 
-把文件添加到仓库中，然后在提交到仓库。
+最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。
 
-```shll
-#git add readme.md
-#git commit -m "fisrt git file"
-```
+## 创建远程仓库
 
-*git commit -m "message"* 文件提交命令，这里为什么需要`add`和`commit`命令呢，因为`add`可以多次添加文件，而`commit`命令只需要执行一次，就可以把之前所有添加的文件提交到仓库中去。 `-m`参数表示本次提交的描述信息。
+其实就是在Github上创建一个仓库
 
-## change file
+1.   New repository 创建一个新仓库，填写仓库名称，点击 create new repository
 
-打开文件，修改第一行内容  Git is a distributed version control system.
+2.   创建成功后，页面会有提示
 
-这个时候，可以输入`git status`命令查看文件状态
+     1.   >    echo "# learngit" >> README.md
+          >    git init
+          >    git add README.md
+          >    git commit -m "first commit"
+          >    git remote add origin git@github.com:gaofeng0527/learngit.git
+          >    git push -u origin master
 
->    $ git status
->    On branch master
->    Changes not staged for commit:
->      (use "git add <file>..." to update what will be committed)
->      (use "git checkout -- <file>..." to discard changes in working directory)
->
->    ```
->        modified:   readme.md
->    ```
->
->    no changes added to commit (use "git add" and/or "git commit -a")
+          …or create a new repository on the command line
 
-会告诉你，内容被修改，并且还没有提交，可以使用`git add`命令添加修改，或者`git checkout`放弃修改。
+          上面的意思是，在本地创建一个仓库，并编写README.md文件，把该目录初始化Git本地仓库，然后通过`git remote add origin git@github.com:gaofeng0527/learngit.git`命令和远程创建的仓库关联。然后通过`git push -u origin master`命令，把本地的内容，推送到远程仓库上。
 
-也可以使用`git diff`命令查看具体修改
+     2.   >    git remote add origin git@github.com:gaofeng0527/learngit.git
+          >    git push -u origin master
 
->    $ git diff
->    diff --git a/readme.md b/readme.md
->    index 02086ec..5dfce89 100644
->    --- a/readme.md
->    +++ b/readme.md
->    @@ -1,3 +1,3 @@
->    -git is a version control system,
->    +git is a distributed version control system,
->
->     git is a free software.
->    \ No newline at end of file
->    warning: LF will be replaced by CRLF in readme.md.
->    The file will have its original line endings in your working directory.
+          …or push an existing repository from the command line
 
-看到具体修改后，可以进行提交了，操作步骤和添加文件一样，先执行一次`git add`命令后，在查看一下状态
+          上面的意思是：本地已经有库了，直接用命令关联远程库，并推送内容。
 
->    $git add readme.md
+     总结：`gaofeng0527`这个是Github的帐号；learngit这个是新创建的仓库名称。`git remote add origin ....`命令是关联远程仓库。把本地库的内容推送到远程，用`git push`命令，实际上是把当前分支`master`推送到远程。
 
->    $ git status
->    warning: LF will be replaced by CRLF in readme.md.
->    The file will have its original line endings in your working directory.
->    On branch master
->    Changes to be committed:
->      (use "git reset HEAD <file>..." to unstage)
->
->    ```
->        modified:   readme.md
->    ```
+     远程库的名字就是`origin`，这是Git默认的叫法，也可以改成别的，但是`origin`这个名字一看就知道是远程库。
 
->    $ git commit -m "change file after commit"
->    [master warning: LF will be replaced by CRLF in readme.md.
->    The file will have its original line endings in your working directory.
->    02df42d] change file after commit
->    warning: LF will be replaced by CRLF in readme.md.
->    The file will have its original line endings in your working directory.
->     1 file changed, 1 insertion(+), 1 deletion(-)
+     由于远程库是空的，我们第一次推送`master`分支时，加上了`-u`参数，Git不但会把本地的`master`分支内容推送的远程新的`master`分支，还会把本地的`master`分支和远程的`master`分支关联起来，在以后的推送或者拉取时就可以简化命令。
 
-提交完成后，再次查看状态
+现在在看，远程仓库的内容，就和本地的内容一样了。
 
->    $ git status
->    On branch master
->    nothing to commit, working directory clean
+## 修改本地内容，提交远程练习
 
-可以看到没有内容需要提交。由此总结一下：
+1.   修改本地README.md文件内容
 
-1.   修改某个文件，查看状态，会提示有内容修改，并且是未提交状态
-2.   add命令之后，查看状态，提醒文件已经添加，但是还没有提交
-3.   commit 状态恢复成初始状态
-
-
-测试提交
