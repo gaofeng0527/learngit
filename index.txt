@@ -1,3 +1,42 @@
 one line
 two line
 shree line
+将这个嵌入到您页面，然后加俩三个字段1是否自动，2用户名，3密码
+https://doc.bokecc.com/live/dev/liveapi/#toc_25
+
+https://view.csslcloud.net/api/view/index?roomid=04FB71BF64E867C99C33DC5901307461&userid=4904A4E46B9676C1
+https://view.csslcloud.net/api/view/index?roomid=68FB0C9F4948FBB79C33DC5901307461&userid=B46316C35ADDB058
+https://view.csslcloud.net/api/view/index?roomid=68FB0C9F4948FBB79C33DC5901307461&userid=B46316C35ADDB058&viewername=145670&viewertoken=ab332dce31ef221ab&forcibly=true 
+https://view.csslcloud.net/api/view/index?roomid=xxx&userid=xxx&autoLogin=true&viewername=11&viewertoken=11
+
+1.验证直播开始
+2.获取直播观看记录，并计算观看时间
+3.同步到学习记录表中
+
+http://etest.ciptc.org.cn/public/live/checkToken
+
+
+from cn.org.ciptc.lms.live.LiveRecode as lr where 1=1 and lr.userId = ? and lr.liveUserId = ? and lr.roomid = ? and lr.classCourseId
+
+
+
+https://view.csslcloud.net/api/view/index?roomid=208356F7A4DDF2CA9C33DC5901307461&userid=B46316C35ADDB058&autoLogin=true&viewername=77965&viewertoken=8e5ea110-bd21-4ab3-8c0f-2d72739f8d52
+
+http://static.ciptc.org.cn/statics/styles/default/jquery-ui-1.8.12.custom.css
+http://static.ciptc.org.cn/statics/live/js/base.js
+
+
+onEdit:function(){
+			var td = $('.ui-field-orgSet', _pageContent);
+			var orgs = $('input[name="orgSet"]', td);
+			$('span:first', td).append('<input type="checkbox" name="orgSetAll" style="width:20px;"></input>全选');
+			var allsel =$('input[name="orgSetAll"]', td);
+			allsel.click(function(){
+				var checked = allsel.attr('checked');
+				if(checked){
+					orgs.attr('checked', 'checked');
+				}else{
+				   orgs.removeAttr('checked');
+				}
+			});
+		},
