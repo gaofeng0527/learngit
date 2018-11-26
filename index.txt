@@ -46,4 +46,4 @@ onEdit:function(){
 		
 		
 		create new branch dev
-		create a new branch develop1.0
+		create new branch develop1.0
