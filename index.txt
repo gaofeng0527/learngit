@@ -43,3 +43,6 @@ onEdit:function(){
 		
 		
 		git@github.com:xtuer/app-template.git
+		
+		
+		create new branch dev
